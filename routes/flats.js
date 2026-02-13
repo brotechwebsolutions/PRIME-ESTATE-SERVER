@@ -1,20 +1,30 @@
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const Flat = require("../models/Flat");
 
-/* GET all flats */
+
+/* =========================
+   GET ALL FLATS
+========================= */
 router.get("/", async (req, res) => {
-  const flats = await Flat.find();
+  const flats = await Flat.find().sort({ createdAt: -1 });
   res.json(flats);
 });
 
-/* ADD flat */
+
+/* =========================
+   ADD FLAT
+========================= */
 router.post("/", async (req, res) => {
   const flat = new Flat(req.body);
   await flat.save();
   res.json(flat);
 });
 
-/* UPDATE flat */
+
+/* =========================
+   UPDATE FLAT
+========================= */
 router.put("/:id", async (req, res) => {
   const flat = await Flat.findByIdAndUpdate(
     req.params.id,
@@ -24,10 +34,14 @@ router.put("/:id", async (req, res) => {
   res.json(flat);
 });
 
-/* DELETE flat */
+
+/* =========================
+   DELETE FLAT
+========================= */
 router.delete("/:id", async (req, res) => {
   await Flat.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted successfully" });
 });
+
 
 module.exports = router;
